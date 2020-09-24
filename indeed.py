@@ -34,11 +34,17 @@ def extract_indeed_jobs(last_page):
   jobs = []
 
   # 반복문으로 동적인 url값을 생성하여 result값에 저장 (last_page의 값 만큼 반복)
-  for page in range(last_page):
-    result = requests.get(f"{URL}&start={page*LIMIT}")
-    # indeed_result에서 html코드를 추출
-    soup = BeautifulSoup(result.text, "html.parser")
-    # 임의로 출력한 값
-    print(result.status_code)
+  # for page in range(last_page):
+  result = requests.get(f"{URL}&start={0*LIMIT}")
+  # indeed_result에서 html코드를 추출
+  soup = BeautifulSoup(result.text, "html.parser")
+
+  # 일자리 목록을 추출
+  results = soup.find_all("div", {"class":"jobsearch-SerpJobCard"})
+  
+  # 반복문을 통해 추출한 일자리 목록에서 title만 따로 추출
+  for result in results:
+    title = result.find("h2", {"class":"title"}).find("a")["title"]
+    print(title)
 
   return jobs

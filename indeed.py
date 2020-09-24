@@ -45,6 +45,18 @@ def extract_indeed_jobs(last_page):
   # 반복문을 통해 추출한 일자리 목록에서 title만 따로 추출
   for result in results:
     title = result.find("h2", {"class":"title"}).find("a")["title"]
-    print(title)
-
+    # 추출한 title에서 span태그의 class가 company인 결과를 추출
+    company = result.find("span",{"class":"company"})
+    # 추출한 company에서 a태그를 추출
+    company_anchor = company.find("a")
+    # company_anchor가 존재하면
+    if company_anchor is not None:
+      company = str(company_anchor.string)
+    # company_anchor가 존재하지 않으면
+    else:
+      company = str(company.string)
+    # company의 문자 또는 문자열의 공백을 제거
+    company = company.strip()
+    
+    print(title, company)
   return jobs

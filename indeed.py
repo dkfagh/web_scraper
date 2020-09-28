@@ -5,7 +5,7 @@ LIMIT = 50
 URL = f"https://www.indeed.com/jobs?q=python&limit={LIMIT}"
 
 
-def extract_indeed_pages():
+def get_last_page():
     result = requests.get(URL)
 
     # indeed_result에서 html코드를 추출
@@ -35,16 +35,19 @@ def extract_job(html):
     title = html.find("h2", {"class": "title"}).find("a")["title"]
     # 추출한 title에서 span태그의 class가 company인 결과를 추출
     company = html.find("span", {"class": "company"})
-    # 추출한 company에서 a태그를 추출
-    company_anchor = company.find("a")
-    # company_anchor가 존재하면
-    if company_anchor is not None:
-        company = str(company_anchor.string)
-    # company_anchor가 존재하지 않으면
+    if company:
+      # 추출한 company에서 a태그를 추출
+      company_anchor = company.find("a")
+      # company_anchor가 존재하면
+      if company_anchor is not None:
+          company = str(company_anchor.string)
+      # company_anchor가 존재하지 않으면
+      else:
+          company = str(company.string)
+      # company의 문자 또는 문자열의 공백을 제거
+      company = company.strip()
     else:
-        company = str(company.string)
-    # company의 문자 또는 문자열의 공백을 제거
-    company = company.strip()
+      company = None
 
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
     job_id = html["data-jk"]
@@ -57,7 +60,7 @@ def extract_job(html):
     }
 
 
-def extract_indeed_jobs(last_page):
+def extract_jobs(last_page):
 
     # 빈 배열 jobs 생성
     jobs = []
@@ -77,3 +80,12 @@ def extract_indeed_jobs(last_page):
             job = extract_job(result)
             jobs.append(job)
     return jobs
+
+
+
+def get_jobs():
+  last_page = get_last_page()
+
+  jobs = extract_jobs(last_page)
+
+  return jobs

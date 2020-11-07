@@ -39,19 +39,19 @@ def extract_job(html):
     company = html.find("span", {"class": "company"})
 
     if company:
-      # 검색된 company에서 a태그를 검색
-      company_anchor = company.find("a")
+        # 검색된 company에서 a태그를 검색
+        company_anchor = company.find("a")
 
-      # company_anchor가 존재하면
-      if company_anchor is not None:
-          company = str(company_anchor.string)
-      # company_anchor가 존재하지 않으면
-      else:
-          company = str(company.string)
-      # company의 문자 또는 문자열의 공백을 제거
-      company = company.strip()
+        # company_anchor가 존재하면
+        if company_anchor is not None:
+            company = str(company_anchor.string)
+        # company_anchor가 존재하지 않으면
+        else:
+            company = str(company.string)
+        # company의 문자 또는 문자열의 공백을 제거
+        company = company.strip()
     else:
-      company = None
+        company = None
 
     # 입력받은 html코드에서 class가 recJobLoc인 div를 검색하고 어트리뷰트 data-rc-loc을 추출
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
@@ -92,8 +92,8 @@ def extract_jobs(last_page):
 
 
 def get_jobs():
-  last_page = get_last_page()
+    last_page = get_last_page()
 
-  jobs = extract_jobs(last_page)
+    jobs = extract_jobs(last_page)
 
-  return jobs
+    return jobs

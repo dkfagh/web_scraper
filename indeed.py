@@ -75,7 +75,7 @@ def extract_jobs(last_page):
 
     # 반복문으로 동적인 url값을 생성하여 result값에 저장 (last_page의 값 만큼 반복)
     for page in range(last_page):
-        print(f"scrapping page {page}")
+        print(f"Scrapping Indeed: Page: {page}")
         # URL&start={page*LIMIT}에 request를 요청
         result = requests.get(f"{URL}&start={page*LIMIT}")
         # result에서 html코드를 추출
